@@ -14,8 +14,6 @@ const oldPointStructure = {
 
 const vowels = ['A', 'E', 'I', 'O', 'U'];
 
-let word = '';
-
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
 	let letterPoints = "";
@@ -41,9 +39,9 @@ function initialPrompt() {
    return wordToScore;
 };
 
-let simpleScorer = (word) => word.length;
+const simpleScorer = (word) => word.length; 
 
-let vowelBonusScorer = (word) => {
+function vowelBonusScorer(word) {
    let score = word.length;
    for (const char in vowels) {
       for (let i = 0; i < word.length; i++) {
@@ -52,17 +50,19 @@ let vowelBonusScorer = (word) => {
          }
       }
    }
+   // console.log(`Score for ${word}: ${score}`);
    return score;
 }
 
 
-let scrabbleScorer = function(word) {
+function scrabbleScorer (word) {
    let score = 0;
    let letter = "";
    for (let i = 0; i < word.length; i++) {
        letter = word.charAt(i);
        score += newPointStructure[letter];
    }
+   // console.log(`Score for ${word}: ${score}`);
    return score;
 }
 
@@ -73,11 +73,11 @@ function scorerPrompt() {
    }
    let userSelection = input.question('Enter 0, 1, or 2: ');
    selectedAlgorithm = scoringAlgorithms[userSelection];
+   // console.log(`Score for ${word}: ${selectedAlgorithm.scorerFunction(word)}`);
    return selectedAlgorithm;
 }
 
 function transform(arr) {
-   let newArr = [];
    const obj = {}
    for (const val in arr) {
       for (let i = 0; i < arr[val].length; i++) {
@@ -107,19 +107,13 @@ const scoringAlgorithms = [
    }
 ];
 
-// Original:
+
 function runProgram() {
-   initialPrompt();
-   scorerPrompt();
+   const word = initialPrompt();
+   selectedAlgorithm = scorerPrompt();
+   console.log(`Score for ${word}: ${selectedAlgorithm.scorerFunction(word)}`);
 }
 
-// function runProgram() {
-//    let word = initialPrompt();
-//    selectedAlgorithm = scorerPrompt();
-//    console.log(`Score for ${word}: ${selectedAlgorithm.scoringFunction(word)}`);
-// }
-
-// test
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
 module.exports = {
