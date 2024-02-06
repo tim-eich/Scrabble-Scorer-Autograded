@@ -3,6 +3,7 @@
 const input = require("readline-sync");
 
 const oldPointStructure = {
+  0: [' '],
   1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
   2: ['D', 'G'],
   3: ['B', 'C', 'M', 'P'],
@@ -13,6 +14,18 @@ const oldPointStructure = {
 };
 
 const vowels = ['A', 'E', 'I', 'O', 'U'];
+
+function transform(arr) {
+   const obj = {}
+   for (const val in arr) {
+      for (let i = 0; i < arr[val].length; i++) {
+         obj[arr[val][i].toLowerCase()] = Number(val);
+      }
+   }
+   return obj;
+}
+
+let newPointStructure = transform(oldPointStructure);
 
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
@@ -35,14 +48,29 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   let wordToScore = input.question("Let's play some scrabble! Enter a word: ");
-   return wordToScore;
+   let word = input.question("Let's play some scrabble! Enter a word: ");
+   for (let i = 0; i < word.length; i++) {
+      // console.log(wordToScore.charAt(i));
+      if (Object.keys(transform(oldPointStructure)).includes(word.charAt(i).toLocaleLowerCase()) !== true) {
+         console.log(`There is no '${word.charAt(i)}' tile.`);
+         word = initialPrompt();
+      }
+   }
+   return word;
 };
 
-const simpleScorer = (word) => word.length; 
+function simpleScorer(word) {
+   let score = 0;
+   for (let i = 0; i < word.length; i++) {
+      if (word.charAt(i) !== ' ') {
+         score++;
+      }
+   }
+   return score;
+}
 
 function vowelBonusScorer(word) {
-   let score = word.length;
+   let score = simpleScorer(word);
    for (const char in vowels) {
       for (let i = 0; i < word.length; i++) {
          if (word.charAt(i).toUpperCase() === vowels[char]) {
@@ -59,12 +87,14 @@ function scrabbleScorer (word) {
    let score = 0;
    let letter = "";
    for (let i = 0; i < word.length; i++) {
-       letter = word.charAt(i);
+       letter = word.charAt(i).toLocaleLowerCase();
        score += newPointStructure[letter];
    }
    // console.log(`Score for ${word}: ${score}`);
    return score;
 }
+
+// console.log(scrabbleScorer('zebra'));
 
 function scorerPrompt() {
    console.log('Which scoring algorithm would you like to use?\n');
@@ -76,18 +106,6 @@ function scorerPrompt() {
    // console.log(`Score for ${word}: ${selectedAlgorithm.scorerFunction(word)}`);
    return selectedAlgorithm;
 }
-
-function transform(arr) {
-   const obj = {}
-   for (const val in arr) {
-      for (let i = 0; i < arr[val].length; i++) {
-         obj[arr[val][i].toLowerCase()] = Number(val);
-      }
-   }
-   return obj;
-}
-
-let newPointStructure = transform(oldPointStructure);
 
 const scoringAlgorithms = [
    {
@@ -106,7 +124,6 @@ const scoringAlgorithms = [
       scorerFunction: scrabbleScorer
    }
 ];
-
 
 function runProgram() {
    const word = initialPrompt();
