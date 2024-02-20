@@ -82,7 +82,6 @@ function vowelBonusScorer(word) {
    return score;
 }
 
-
 function scrabbleScorer (word) {
    let score = 0;
    let letter = "";
@@ -94,18 +93,23 @@ function scrabbleScorer (word) {
    return score;
 }
 
-// console.log(scrabbleScorer('zebra'));
-
 function scorerPrompt() {
    console.log('Which scoring algorithm would you like to use?\n');
    for (let i = 0; i < scoringAlgorithms.length; i ++) {
       console.log(`${i} - ${scoringAlgorithms[i].name}`);
    }
    let userSelection = input.question('Enter 0, 1, or 2: ');
-   selectedAlgorithm = scoringAlgorithms[userSelection];
+   if (userSelection >= 0 && userSelection < scoringAlgorithms.length) {
+      selection = scoringAlgorithms[userSelection];
+      
+      // console.log(selection.scorerFunction('abc'));
+      return selection;
+   } else {
+      scorerPrompt();
+   }
    // console.log(`Score for ${word}: ${selectedAlgorithm.scorerFunction(word)}`);
-   return selectedAlgorithm;
 }
+
 
 const scoringAlgorithms = [
    {
@@ -125,10 +129,14 @@ const scoringAlgorithms = [
    }
 ];
 
+
+// let algorithm = scorerPrompt();
+
 function runProgram() {
    const word = initialPrompt();
-   selectedAlgorithm = scorerPrompt();
-   console.log(`Score for ${word}: ${selectedAlgorithm.scorerFunction(word)}`);
+   let algorithm = scorerPrompt();
+   // console.log(algorithm);
+   console.log(`Score for ${word}: ${algorithm.scorerFunction(word)}`);
 }
 
 // Don't write any code below this line //
