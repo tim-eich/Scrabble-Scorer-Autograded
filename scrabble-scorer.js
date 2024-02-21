@@ -3,14 +3,15 @@
 const input = require("readline-sync");
 
 const oldPointStructure = {
-  0: [' '],
-  1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
-  2: ['D', 'G'],
-  3: ['B', 'C', 'M', 'P'],
-  4: ['F', 'H', 'V', 'W', 'Y'],
-  5: ['K'],
-  8: ['J', 'X'],
-  10: ['Q', 'Z']
+   // // This is breaking test #3, 'transform returns an object with letter keys'
+   // 0: [' ']
+   1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
+   2: ['D', 'G'],
+   3: ['B', 'C', 'M', 'P'],
+   4: ['F', 'H', 'V', 'W', 'Y'],
+   5: ['K'],
+   8: ['J', 'X'],
+   10: ['Q', 'Z']
 };
 
 const vowels = ['A', 'E', 'I', 'O', 'U'];
@@ -51,7 +52,7 @@ function initialPrompt() {
    let word = input.question("Let's play some scrabble! Enter a word: ");
    for (let i = 0; i < word.length; i++) {
       // console.log(wordToScore.charAt(i));
-      if (Object.keys(transform(oldPointStructure)).includes(word.charAt(i).toLocaleLowerCase()) !== true) {
+      if (Object.keys(transform(oldPointStructure)).includes(word.charAt(i).toLowerCase()) !== true) {
          console.log(`There is no '${word.charAt(i)}' tile.`);
          word = initialPrompt();
       }
@@ -101,7 +102,7 @@ function scorerPrompt() {
    let userSelection = input.question('Enter 0, 1, or 2: ');
    if (userSelection >= 0 && userSelection < scoringAlgorithms.length) {
       selection = scoringAlgorithms[userSelection];
-      
+
       // console.log(selection.scorerFunction('abc'));
       return selection;
    } else {
@@ -129,7 +130,7 @@ const scoringAlgorithms = [
    }
 ];
 
-
+console.log(newPointStructure);
 // let algorithm = scorerPrompt();
 
 function runProgram() {
