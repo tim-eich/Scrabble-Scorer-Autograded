@@ -4,7 +4,7 @@ const input = require("readline-sync");
 
 const oldPointStructure = {
    // // This is breaking test #3, 'transform returns an object with letter keys'
-   // 0: [' ']
+   0: [' '],
    1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
    2: ['D', 'G'],
    3: ['B', 'C', 'M', 'P'],
@@ -87,7 +87,7 @@ function scrabbleScorer (word) {
    let score = 0;
    let letter = "";
    for (let i = 0; i < word.length; i++) {
-       letter = word.charAt(i).toLocaleLowerCase();
+       letter = word.charAt(i).toLowerCase();
        score += newPointStructure[letter];
    }
    // console.log(`Score for ${word}: ${score}`);
@@ -129,9 +129,6 @@ const scoringAlgorithms = [
       scorerFunction: scrabbleScorer
    }
 ];
-
-console.log(newPointStructure);
-// let algorithm = scorerPrompt();
 
 function runProgram() {
    const word = initialPrompt();
